@@ -14,9 +14,8 @@ export class TodoPage {
 
     addMultipleTodos(num, todoText){
         for(let i=0; i<num; i++){
-            cy.get('.new-todo').type(todoText + "{enter}");
+            cy.get('.new-todo').type(`${todoText} ${i + 1} {enter}`);
         }
-        
     }
 
     markAsCompleted(todoIndex){
@@ -50,6 +49,20 @@ export class TodoPage {
 
     validateListLength(lengthToValidate){
         cy.get('.todo-list li').should('have.length', lengthToValidate)
+    }
+
+    validateRandomTodo(listLenght, expectedText){
+        // check the arguments
+        if (listLenght < 2) {
+            return;
+        }
+
+        // the 1st todo is not checked
+        do {
+            var randomNumber = Math.floor(Math.random() * listLenght);
+        } while (randomNumber == 0);
+        
+        cy.get(`.todo-list li:nth-child(${randomNumber + 1})`).should('have.text', `${expectedText} ${listLenght - randomNumber - 1}`);
     }
     // ************************************************************************
 }

@@ -41,13 +41,15 @@ describe('todo actions', () => {
     })
 
     it('should add 100 more todos and check it', () => {
-        let num = 100;
+        let num = 100; // how many todos should be added
+        let text = "heh";
 
         // actions
-        todoPage.addMultipleTodos(num, "heh");
+        todoPage.addMultipleTodos(num, text);
     
         // assertions
         todoPage.validateListLength(num + 1);
+        todoPage.validateRandomTodo(num + 1, text);
         
     })
 
