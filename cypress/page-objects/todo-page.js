@@ -2,6 +2,7 @@
 // alternative solution: App Actions
 
 export class TodoPage {
+
     // ACTIONS ***************************************************************
     navigate(){
         cy.visit('http://todomvc-app-for-testing.surge.sh/');
@@ -9,6 +10,13 @@ export class TodoPage {
 
     addOneTodo(todoText){
         cy.get('.new-todo').type(todoText + "{enter}");
+    }
+
+    addMultipleTodos(num, todoText){
+        for(let i=0; i<num; i++){
+            cy.get('.new-todo').type(todoText + "{enter}");
+        }
+        
     }
 
     markAsCompleted(todoIndex){
