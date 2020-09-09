@@ -57,10 +57,10 @@ export class TodoPage {
             return;
         }
 
-        // the 1st todo is not checked
+        // generate random number to probe the list
         do {
             var randomNumber = Math.floor(Math.random() * listLenght);
-        } while (randomNumber == 0);
+        } while (randomNumber == 0); // the 1st todo is not checked
         
         cy.get(`.todo-list li:nth-child(${randomNumber + 1})`).should('have.text', `${expectedText} ${listLenght - randomNumber - 1}`);
     }
