@@ -2,28 +2,34 @@
 // alternative solution: App Actions
 
 export class TodoPage {
+    constructor ( url, newTodo, todoList, toggle ){
+        this._url = url;
+        this._newTodo = newTodo;
+        this._todoList = todoList;
+        this._toggle = toggle;
+    }
 
     // ACTIONS ***************************************************************
     navigate(){
-        cy.visit('http://todomvc-app-for-testing.surge.sh/');
+        cy.visit( this._url );
     }
 
-    addOneTodo(todoText){
-        cy.get('.new-todo').type(todoText + "{enter}");
+    addOneTodo( todoText ){
+        cy.get( this._newTodo ).type( todoText + "{enter}" );
     }
 
-    addMultipleTodos(num, todoText){
-        for(let i=0; i<num; i++){
-            cy.get('.new-todo').type(`${todoText} ${i + 1} {enter}`);
+    addMultipleTodos( num, todoText ){
+        for( let i=0; i<num; i++ ){
+            cy.get( this._newTodo ).type( `${todoText} ${i + 1} {enter}` );
         }
     }
 
-    markAsCompleted(todoIndex){
-        cy.get(`.todo-list li:nth-child(${todoIndex + 1}) .toggle`).click();
+    markAsCompleted( todoIndex ){ // numbering from 0
+        cy.get( `${this._todoList} li:nth-child(${todoIndex + 1}) ${this._toggle}` ).click();
     }
 
-    clickOnLabel(labelContains){
-        cy.contains(labelContains).click();
+    clickOnLabel( labelContains ){
+        cy.contains( labelContains ).click();
     }
     // ************************************************************************
 
@@ -31,38 +37,38 @@ export class TodoPage {
 
     // VALIDATIONS ************************************************************
 
-    validateTodoText(todoIndex, expectedText){
-        cy.get(`.todo-list li:nth-child(${todoIndex + 1})`).should('have.text', expectedText);
+    validateTodoText( todoIndex, expectedText ){
+        cy.get( `${this._todoList} li:nth-child(${todoIndex + 1})` ).should( 'have.text', expectedText );
     }
 
-    validateNotCheckedBox(todoIndex){
-        cy.get(`.todo-list li:nth-child(${todoIndex + 1}) .toggle`).should('not.be.checked');
+    validateNotCheckedBox( todoIndex ){
+        cy.get( `${this._todoList} li:nth-child(${todoIndex + 1}) ${this._toggle}` ).should( 'not.be.checked' );
     }
 
-    validateCSSLabelCompleted(todoIndex){
-        cy.get(`.todo-list li:nth-child(${todoIndex + 1}) label`).should('have.css', 'text-decoration-line', 'line-through');
+    validateCSSLabelCompleted( todoIndex ){
+        cy.get( `${this._todoList} li:nth-child(${todoIndex + 1}) label` ).should( 'have.css', 'text-decoration-line', 'line-through' );
     }
 
     validateEmptyList(){
-        cy.get('.todo-list').should('not.have.descendants', 'li');
+        cy.get( this._todoList ).should( 'not.have.descendants', 'li' );
     }
 
-    validateListLength(lengthToValidate){
-        cy.get('.todo-list li').should('have.length', lengthToValidate)
+    validateListLength( lengthToValidate ){
+        cy.get( `${this._todoList} li` ).should( 'have.length', lengthToValidate )
     }
 
-    validateRandomTodo(listLenght, expectedText){
-        // check the arguments
-        if (listLenght < 2) {
+    validateRandomTodo( listLenght, expectedText ){
+        // check the listLength - values 0 OR 1 are not acceptable
+        if ( listLenght < 2 ) {
             return;
         }
 
         // generate random number to probe the list
         do {
-            var randomNumber = Math.floor(Math.random() * listLenght);
-        } while (randomNumber == 0); // the 1st todo is not checked
+            var randomNumber = Math.floor( Math.random() * listLenght );
+        } while ( randomNumber == 0 ); // the 1st todo should not be checked
         
-        cy.get(`.todo-list li:nth-child(${randomNumber + 1})`).should('have.text', `${expectedText} ${listLenght - randomNumber - 1}`);
+        cy.get( `${this._todoList} li:nth-child(${randomNumber + 1})` ).should( 'have.text', `${expectedText} ${listLenght - randomNumber - 1}` );
     }
     // ************************************************************************
 }
