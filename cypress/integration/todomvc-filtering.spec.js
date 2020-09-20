@@ -3,7 +3,11 @@
 import { TodoPage } from "../page-objects/todo-page";
 
 describe( 'filtering', () => {
-    const todoPage = new TodoPage( 'http://todomvc-app-for-testing.surge.sh/', '.new-todo', '.todo-list', '.toggle' ); // use let in case you want to change the value
+    const todoPage = new TodoPage(
+        'http://todomvc-app-for-testing.surge.sh/',
+        '.new-todo',
+        '.todo-list',
+        '.toggle' );
 
     beforeEach( ()=>{
         // actions
@@ -14,7 +18,7 @@ describe( 'filtering', () => {
         todoPage.addOneTodo( 'Use Cypress' );
 
         todoPage.markAsCompleted( 2 ); // mark the 2nd Todo
-    })
+    });
 
     it( 'should filter "Active" todos', () => {
         // actions
@@ -22,7 +26,7 @@ describe( 'filtering', () => {
 
         // assertions
         todoPage.validateListLength( 2 );
-    })
+    });
 
     it( 'should filter "Completed" todos', () => {
         // actions
@@ -30,7 +34,7 @@ describe( 'filtering', () => {
 
         // assertions
         todoPage.validateListLength( 1 );
-    })
+    });
 
     it( 'should filter "All" todos', () => {
         // actions
@@ -38,5 +42,5 @@ describe( 'filtering', () => {
 
         // assertions
         todoPage.validateListLength( 3 );
-    })
-})
+    });
+});

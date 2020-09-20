@@ -7,7 +7,11 @@ import { TodoPage } from "../page-objects/todo-page";
 import { Eyes } from "../helper-objects/eyes";
 
 describe( 'visual validation', () => {
-    const todoPage = new TodoPage( 'http://todomvc-app-for-testing.surge.sh/', '.new-todo', '.todo-list', '.toggle' ); // use let in case you want to change the value
+    const todoPage = new TodoPage(
+        'http://todomvc-app-for-testing.surge.sh/',
+        '.new-todo',
+        '.todo-list',
+        '.toggle' );
 
     const eyes = new Eyes( 'TAU TodoMVC', 'TAU TodoMVC Hello!' );
     eyes.chromeWidth = 800;
@@ -35,5 +39,5 @@ describe( 'visual validation', () => {
 
         // assertions - visual validation
         eyes.checkWindow( 'mark as completed' );
-    })
-})
+    });
+});
